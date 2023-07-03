@@ -2,13 +2,14 @@
 
 if [ $# -lt 1 ] ; then
 	echo "Usage: $0 [video link]"
+	exit
 fi
 
-youtube-dl -o video -- "$1"
+youtube-dl -f 'bestvideo[height<=480]+bestaudio' -o video -- "$1"
 
 FILE="$(ls -1 video.* | head -n1)"
 
-ffmpeg -i "$FILE" -r 1/1 frames/%03d.ppm
+ffmpeg -i "$FILE" frames/%04d.ppm
 
 make -C frames
 
